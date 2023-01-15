@@ -20,6 +20,12 @@ long double s21_fabs(double x) {
     return x;
 }
 
+long double fmod(double x, double y) {
+    while (x >= y)
+        x -= y;
+    return x;
+}
+
 int main() {
     return 0;
 }
