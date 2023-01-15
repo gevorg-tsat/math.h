@@ -2,19 +2,24 @@
 //#include <math.h>
 #include <stdio.h>
 
-int s21_fact(int x) {
-  int y = 1;
-  if (x == 0) {
-  } else for (int i = 1; i <= x; i++) {
-    y = y * i;
-  }
-  return y;
+unsigned long long s21_fact(unsigned int x) {
+    int y = 1;
+    for (int i = 1; i <= x; i++, y *= i); 
+    return y;
 }
 
-int s21_abs(int x) {return (x < 0) ? ((-1) * x) : x;}
+int s21_abs(int x) {
+    if (x < 0)
+        x = -x;
+    return x;
+}
 
-long double s21_fabs(double x) {return (x < 0) ? ((-1L) * x) : x;}
+long double s21_fabs(double x) {
+    if (x < 0)
+        x = - 1L * x;
+    return x;
+}
 
 int main() {
-  return 1;
+    return 0;
 }
