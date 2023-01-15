@@ -17,5 +17,7 @@
 #define S21_INF (1. / 0.)
 
 int s21_fact(int argument);
+int s21_abs(int x);
+long double s21_fabs(double x);
 
 #endif  // SRC_MATH_S21_MATH_H_
