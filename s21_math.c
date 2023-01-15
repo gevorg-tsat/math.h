@@ -69,7 +69,7 @@ long double s21_log(double x){
     }
     else if (x >= 1){
         long double add_value = x - 1;
-        for(int i = 1; add_value > S21_EPS && !flag; i++){
+        for(double i = 2; add_value > S21_EPS && !flag; i++) {
             add_value *= ((-1) * x * (i - 1) / i);
             sum += add_value;
             if(sum > DBL_MAX){
@@ -80,7 +80,7 @@ long double s21_log(double x){
     }
     else {
         long double add_value = - (1 - x);
-        for(int i = 1; add_value > S21_EPS && !flag; i++){
+        for(int i = 2; add_value > S21_EPS && !flag; i++){
             add_value *= (x * (i - 1) / i);
             sum += add_value;
             if(sum < -DBL_MAX) {
