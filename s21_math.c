@@ -4,7 +4,7 @@
 
 unsigned long long s21_fact(unsigned int x) {
     int y = 1;
-    for (int i = 1; i <= x; i++, y *= i); 
+    for (unsigned int i = 1; i <= x; i++, y *= i); 
     return y;
 }
 
@@ -20,7 +20,7 @@ long double s21_fabs(double x) {
     return x;
 }
 
-long double fmod(double x, double y) {
+long double s21_fmod(double x, double y) {
     while (x >= y)
         x -= y;
     return x;
