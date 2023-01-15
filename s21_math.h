@@ -3,6 +3,7 @@
  
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 
 #define S21_E 2.718281828459045L
 #define S21_LOG2E 1.442695040888963L
@@ -18,11 +19,9 @@
 #define S21_SQRT2 1.414213562373095L
 #define S21_NAN (0. / 0.)
 #define WIDTH 15
-#define S21_NAN 0.0/0.0
 #define S21_MINUS_INF -1.0/0.0
 #define S21_PLUS_INF 1.0/0.0
 #define DBL_MAX 1.7976931348623158e+308
-#define s21_inf __LONG_MAX__
 #define S21_EPS 1e-9
 
 unsigned long long s21_fact(unsigned int x);

@@ -31,7 +31,7 @@ long double s21_exp(double x){
         add_value *= x/i;
         sum += add_value;
         if(sum > DBL_MAX){
-            sum = s21_inf;
+            sum = S21_PLUS_INF;
             break;
         }
     }
@@ -39,16 +39,22 @@ long double s21_exp(double x){
 }
 
 long double s21_ceil(double x){
-    long double ceil_x = (long long int)x;
-    if(x != ceil_x && x > 0.)
-        ceil_x+=1;
-    return(ceil_x);
+    long double res = x;
+    if (!isnan(x) && !isinf(x)) {
+        res = (long long int)x;
+        if(x != res && x > 0.)
+            res+=1;
+    }
+    return res;
 }
 long double s21_floor(double x){
-    long double floor_x = (long long int)x;
-    if( x != floor_x && x < 0.)
-            floor_x -= 1;
-    return(floor_x);
+    long double res = x;
+    if (!isnan(x) && !isinf(x)) {
+        res = (long long int)x;
+        if( x != res && x < 0.)
+                res -= 1;
+    }
+    return(res);
 }
 
 long double s21_log(double x){
@@ -93,5 +99,6 @@ long double s21_pow(double base, double exp){
 
 
 int main() {
+    printf("%Lf", s21_ceil(S21_NAN));
     return 0;
 }
