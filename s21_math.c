@@ -27,12 +27,13 @@ long double s21_fmod(double x, double y) {
 long double s21_exp(double x){
     long double sum = 1;
     long double add_value = 1;
-    for(int i = 1; add_value > S21_EPS; i++){
-        add_value *= x/i;
+    int flag = 0;
+    for(int i = 1; add_value > S21_EPS && !flag; i++){
+        add_value *= (x/i);
         sum += add_value;
         if(sum > DBL_MAX){
             sum = S21_PLUS_INF;
-            break;
+            flag = 1;
         }
     }
     return sum;
@@ -59,20 +60,34 @@ long double s21_floor(double x){
 
 long double s21_log(double x){
     long double sum = 0;
-    
+    int flag = 0;
     if(x <= 0.){
         if(x == 0.)
             sum = S21_MINUS_INF;
         else 
             sum = S21_NAN;
     }
-    else{
-        long double add_value = 0;
-        for(int i = 0; i < 100; i++){
-            add_value = 2*(x - s21_exp(sum))/(x + s21_exp(sum));
+    else if (x >= 1){
+        long double add_value = x - 1;
+        for(int i = 1; add_value > S21_EPS && !flag; i++){
+            add_value *= ((-1) * x * (i - 1) / i);
             sum += add_value;
+            if(sum > DBL_MAX){
+                sum = S21_PLUS_INF;
+                flag = 1;
+            }
         }
-        
+    }
+    else {
+        long double add_value = - (1 - x);
+        for(int i = 1; add_value > S21_EPS && !flag; i++){
+            add_value *= (x * (i - 1) / i);
+            sum += add_value;
+            if(sum < -DBL_MAX) {
+                sum = S21_MINUS_INF;
+                flag = 1;
+            }
+        }
     }
     return sum;
 }
@@ -99,6 +114,6 @@ long double s21_pow(double base, double exp){
 
 
 int main() {
-    printf("%Lf", s21_ceil(S21_NAN));
+    printf("%Lf %f", s21_log(3), log(3));
     return 0;
 }
