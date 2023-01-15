@@ -1,4 +1,6 @@
 #include "s21_math.h"
+#include <math.h>
+#include <stdio.h>
 
 unsigned long long s21_fact(unsigned int x) {
     int y = 1;
@@ -30,8 +32,8 @@ long double s21_exp(double x){
     for(int i = 1; add_value > S21_EPS; i++){
         add_value *= x/i;
         sum += add_value;
-        if(sum > DBL_MAX){
-            sum = s21_inf;
+        if(sum > S21_MAX){
+            sum = S21_PLUS_INF;
             break;
         }
     }
@@ -91,7 +93,24 @@ long double s21_pow(double base, double exp){
     return res;
 }
 
+long double s21_sin(double x) {
+  long double q = x, sum = 0, i = 1;
+  while (s21_fabs(q) > 0.0000001) {
+    sum += q;
+    q = q * (-1) * (x * x) / ((2 * i + 1) * (2 * i));
+    i++;
+  }
+  return sum;
+}
+
+long double s21_cos(double x) {
+  return s21_sin(x + S21_PI_2);
+}
+
+long double s21_tan(double x) {
+  return s21_sin(x) / s21_cos(x);
+}
 
 int main() {
-    return 0;
+  return 0;
 }
