@@ -4,7 +4,7 @@
 
 unsigned long long s21_fact(unsigned int x) {
     int y = 1;
-    for (int i = 1; i <= x; i++, y *= i); 
+    for (unsigned int i = 1; i <= x; i++, y *= i); 
     return y;
 }
 
