@@ -94,7 +94,8 @@ long double s21_pow(double base, double exp){
 }
 
 long double s21_sin(double x) {
-  long double q = x, sum = 0, i = 1;
+  long double q = x, sum = 0;
+  int i = 1;
   while (s21_fabs(q) > 0.0000001) {
     sum += q;
     q = q * (-1) * (x * x) / ((2 * i + 1) * (2 * i));
@@ -111,6 +112,31 @@ long double s21_tan(double x) {
   return s21_sin(x) / s21_cos(x);
 }
 
+long double s21_asin(double x) {
+  long double q = x, sum = S21_PI, multiplicator = 1L;
+  int i = 1;
+    printf("%LF:%LF:%d\n", q, sum, i);
+
+  while (s21_fabs(q) > 0.0000001) {
+    sum -= q;
+    multiplicator = s21_fact(2 * i) / ((2 * i + 1) * multiplicator);
+    q = q * (x * x) / (4 * i * i * multiplicator);
+    i++;
+    printf("%LF:%LF:%d\n", q, sum, i);
+  }
+  return sum;
+}
+
+/*long double s21_acos(double x) {
+
+}
+
+long double s21_atan(double x) {
+
+}*/
+
 int main() {
+    printf("%LF\n", s21_asin(1));
+    printf("%lF\n", asin(1));
   return 0;
 }
