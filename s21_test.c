@@ -145,8 +145,8 @@ START_TEST(pow_zero_in_double)
 END_TEST
 START_TEST(pow_zero_in_zero)
 {
-    double a = 0.;
-    double b = 0.;
+        double a = 0.;
+        double b = 0.;
     ck_assert_ldouble_eq_tol(s21_pow(a,b),pow(a,b),1e-6);
 }
 END_TEST
