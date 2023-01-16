@@ -17,11 +17,10 @@
 #define S21_2_PI 0.636619772367581L
 #define S21_2_SQRTPI 1.128379167095512L
 #define S21_SQRT2 1.414213562373095L
-#define S21_NAN (0. / 0.)
-#define WIDTH 15
-#define S21_MINUS_INF -1.0/0.0
-#define S21_PLUS_INF 1.0/0.0
-#define DBL_MAX 1.7976931348623158e+308
+#define S21_NAN 0. / 0.
+#define S21_MINUS_INF -1. / 0.
+#define S21_PLUS_INF 1. / 0.
+#define S21_MAX 1.7976931348623158e+308
 #define S21_EPS 1e-9
 
 unsigned long long s21_fact(unsigned int x);
