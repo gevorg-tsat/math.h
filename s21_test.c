@@ -44,7 +44,7 @@ START_TEST(fmod_with_numbers_more_then_zero)
     ck_assert_double_eq_tol(s21_fmod(a,b),fmod(a,b),1e-6);
 }
 END_TEST
-/*
+
 START_TEST(fmod_with_numbers_less_then_zero)
 {
     int min = -10000;
@@ -61,7 +61,7 @@ START_TEST(fmod_with_one_numbers_less_and_one_more_then_zero)
     ck_assert_double_eq_tol(s21_fmod(a,b),fmod(a,b),1e-6);
 }
 END_TEST
-*/
+
 
 int main() {
     Suite *s1 = suite_create("Tests_for_math");
@@ -80,8 +80,8 @@ int main() {
     tcase_add_test(tc_abs, abs_of_zero);
     
     tcase_add_test(tc_fmod, fmod_with_numbers_more_then_zero);
-//  tcase_add_test(tc_1, fmod_with_numbers_less_then_zero);
-//  tcase_add_test(tc_1, fmod_with_one_numbers_less_and_one_more_then_zero);
+    tcase_add_test(tc_fmod, fmod_with_numbers_less_then_zero);
+    tcase_add_test(tc_fmod, fmod_with_one_numbers_less_and_one_more_then_zero);
 
     
     srunner_run_all(sr, CK_ENV);

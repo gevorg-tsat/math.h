@@ -3,8 +3,8 @@ CFLAGS = -Wall -Werror -Wextra -std=c11
 
 all: s21_math.a
 
-s21_math.a: s21_math.c
-	$(CC) $(CFLAGS) s21_math.c -o s21_math.a
+s21_math.a: s21_math.c main.c
+	$(CC) $(CFLAGS) s21_math.c main.c -o s21_math.a
 
 test: s21_test.c 
 	$(CC) $(CFLAGS) -lcheck -lm -lpthread s21_test.c s21_math.c -o test

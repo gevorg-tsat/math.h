@@ -3,7 +3,9 @@
  
 #include <stdio.h>
 #include <stdlib.h>
-#include <math.h>
+
+#define S21_isnan(x) ((x) != x)
+#define S21_isinf(x) (!S21_isnan(x) && S21_isnan(x - x))
 
 #define S21_E 2.718281828459045L
 #define S21_LOG2E 1.442695040888963L

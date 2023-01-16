@@ -1,6 +1,4 @@
 #include "s21_math.h"
-#include <math.h>
-#include <stdio.h>
 
 #define TEST 10, -1.5
 
@@ -54,7 +52,7 @@ long double s21_exp(double x){
 
 long double s21_ceil(double x){
     long double res = x;
-    if (!isnan(x) && !isinf(x)) {
+    if (!S21_isnan(x) && !S21_isinf(x)) {
         res = (long long int)x;
         if(x != res && x > 0.)
             res+=1;
@@ -63,7 +61,7 @@ long double s21_ceil(double x){
 }
 long double s21_floor(double x){
     long double res = x;
-    if (!isnan(x) && !isinf(x)) {
+    if (!S21_isnan(x) && !S21_isinf(x)) {
         res = (long long int)x;
         if( x != res && x < 0.)
                 res -= 1;
@@ -112,9 +110,9 @@ long double s21_pow(double base, double exp){
     else {
         res = s21_exp(exp * s21_log(base));
     }
-    if (res < - S21_MAX + 1 && !(isnan(res)))
+    if (res < - S21_MAX + 1 && !(S21_isnan(res)))
         res = S21_MINUS_INF;
-    else if (res > S21_MAX && !(isnan(res)))
+    else if (res > S21_MAX && !(S21_isnan(res)))
         res = S21_MINUS_INF;
     return res;
 }
@@ -148,7 +146,7 @@ long double s21_asin(double x) {
       i++;
     }
   } else if (s21_fabs(x) <= 1) {
-    sum = S21_PI_2 - 2 * s21_asin(sqrt((1 - x) / 2));
+    sum = S21_PI_2 - 2 * s21_asin(s21_sqrt((1 - x) / 2));
   } else 
     sum = S21_NAN;
   return sum;
@@ -160,8 +158,8 @@ long double s21_acos(double x) {
 
 long double s21_atan(double x) {
   long double sum = S21_PI_2;
-  if (!isinf(x)) 
-    sum = s21_asin(x / sqrt(1 + x * x));
+  if (!S21_isinf(x)) 
+    sum = s21_asin(x / s21_sqrt(1 + x * x));
   return sum;
 }
 long double s21_sqrt(double x) {
