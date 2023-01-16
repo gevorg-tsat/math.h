@@ -38,6 +38,14 @@ long double s21_exp(double x){
     long double sum = 1;
     long double add_value = 1;
     int flag = 0, i = 1;
+    if (S21_isinf(x) && x < 0) {
+        sum = 0;
+        flag = 1;
+    }
+    if (S21_isnan(x)) {
+        sum = S21_NAN;
+        flag = 1;
+    }
     while (s21_fabs(add_value) > S21_EPS && !flag) {
         add_value *= (x / i);
         i++;
@@ -95,8 +103,24 @@ long double s21_log(double x) {
 
 long double s21_pow(double base, double exp){
     long double res = 1;
-    
-    if(base < 0.){
+    if (exp == 0)
+        res = 1;
+    else if (base == 0) {
+        if(S21_isnan(exp))
+            res = S21_NAN;
+        else
+            res = 0;
+    }
+    else if (base == 1) {
+        res = 1;
+    }
+    else if (S21_isinf(exp)) {
+        if ((exp > 0 && s21_fabs(base) > 1) || (exp < 0 && s21_fabs(base) < 1))
+            res = S21_PLUS_INF;
+        else
+            res = 0;
+    }
+    else if(base < 0.){
         if (exp == s21_floor(exp)) {
             if (exp > 0)
                 for (long double i = 1; i <= exp; i++, res *= base);
@@ -110,10 +134,10 @@ long double s21_pow(double base, double exp){
     else {
         res = s21_exp(exp * s21_log(base));
     }
-    if (res < - S21_MAX + 1 && !(S21_isnan(res)))
+    if (S21_isinf(res) && res < 0)
         res = S21_MINUS_INF;
-    else if (res > S21_MAX && !(S21_isnan(res)))
-        res = S21_MINUS_INF;
+    else if (S21_isinf(res) && res > 0)
+        res = S21_PLUS_INF;
     return res;
 }
 
