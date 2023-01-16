@@ -167,4 +167,3 @@ long double s21_atan(double x) {
 long double s21_sqrt(double x) {
     return s21_pow(x, 0.5);
 }
-
