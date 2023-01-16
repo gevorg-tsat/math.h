@@ -103,6 +103,20 @@ START_TEST(exp_nan)
     ck_assert_double_nan(exp(power));
 }
 
+START_TEST(exp_small_positive)
+{
+    double power = 0.7;
+    ck_assert_ldouble_eq_tol(s21_exp(power),exp(power),1e-6);
+}
+END_TEST
+
+START_TEST(exp_small_negative)
+{
+    double power = -0.7;
+    ck_assert_ldouble_eq_tol(s21_exp(power),exp(power),1e-6);
+}
+END_TEST
+
 int main() {
     Suite *s1 = suite_create("Tests_for_math");
     
@@ -131,7 +145,11 @@ int main() {
     tcase_add_test(tc_exp, exp_inf);
     tcase_add_test(tc_exp, exp_minus_inf);
     tcase_add_test(tc_exp, exp_nan);
+    tcase_add_test(tc_exp, exp_small_positive);
+    tcase_add_test(tc_exp, exp_small_negative);
 
+
+    
     srunner_run_all(sr, CK_ENV);
     int a = srunner_ntests_failed(sr);
     srunner_free(sr);

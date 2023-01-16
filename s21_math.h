@@ -23,7 +23,7 @@
 #define S21_MINUS_INF -1. / 0.
 #define S21_PLUS_INF 1. / 0.
 #define S21_MAX 1.7976931348623158e+308
-#define S21_EPS 1e-9
+#define S21_EPS 1e-16
 
 unsigned long long s21_fact(unsigned int x);
 int s21_abs(int x);
