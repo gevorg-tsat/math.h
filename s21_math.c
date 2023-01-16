@@ -138,9 +138,3 @@ long double s21_atan(double x) {
     sum = s21_asin(x / sqrt(1 + x * x));
   return sum;
 }
-
-int main() {
-  printf("%lF\n", tan(-S21_PI_2));
-  printf("%LF\n", s21_tan(-S21_PI_2));    
-  return 0;
-}
