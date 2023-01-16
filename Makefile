@@ -11,6 +11,11 @@ test: s21_test.c
 	./test
 	rm test
 
+gcov_report: test
+	lcov --capture --directory test -o gcov_report.info -c -d .
+	genhtml -o gcov_report gcov_report.info
+	open gcov_report/index.html
+
 clean:
 	rm s21_math.a
 

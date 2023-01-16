@@ -1,4 +1,5 @@
 #include "s21_math.h"
+#include <math.h>
 
 #define TEST 10, -1.5
 
@@ -120,10 +121,14 @@ long double s21_pow(double base, double exp){
 long double s21_sin(double x) {
   long double q = x, sum = 0;
   int i = 1;
-  while (s21_fabs(q) > S21_EPS) {
-    sum += q;
-    q = q * (-1) * (x * x) / ((2 * i + 1) * (2 * i));
-    i++;
+  if (S21_isinf(x) || S21_isnan(x)) {
+    sum = S21_NAN;
+  } else {
+    while (s21_fabs(q) > S21_EPS) {
+      sum += q;
+      q = q * (-1) * (x * x) / ((2 * i + 1) * (2 * i));
+      i++;
+    }
   }
   return sum;
 }
@@ -133,7 +138,12 @@ long double s21_cos(double x) {
 }
 
 long double s21_tan(double x) {
-  return s21_sin(x) / s21_cos(x);
+  x = fmod(x, S21_PI);
+  long double result = S21_NAN;
+  if ((s21_fabs(x - S21_PI_2) > 1e-6) && !S21_isinf(x) && !S21_isnan(x)) {
+    result = s21_sin(x) / s21_cos(x);
+  }
+  return result;
 }
 
 long double s21_asin(double x) {
@@ -162,6 +172,7 @@ long double s21_atan(double x) {
     sum = s21_asin(x / s21_sqrt(1 + x * x));
   return sum;
 }
+
 long double s21_sqrt(double x) {
     return s21_pow(x, 0.5);
 }
