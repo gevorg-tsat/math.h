@@ -67,27 +67,26 @@ long double s21_log(double x){
         else 
             sum = S21_NAN;
     }
-    else if (x >= 1){
-        long double add_value = x - 1;
-        for(double i = 2; add_value > S21_EPS && !flag; i++) {
-            add_value *= ((-1) * x * (i - 1) / i);
-            sum += add_value;
-            if(sum > DBL_MAX){
-                sum = S21_PLUS_INF;
-                flag = 1;
-            }
-        }
-    }
     else {
-        long double add_value = - (1 - x);
-        for(int i = 2; add_value > S21_EPS && !flag; i++){
-            add_value *= (x * (i - 1) / i);
-            sum += add_value;
-            if(sum < -DBL_MAX) {
-                sum = S21_MINUS_INF;
+        long double count = 1, z, powe = 1, y;
+        z = (x + 1) / (x - 1);
+        y = (1 / powe)*z;
+        long double step = ((x - 1) * (x - 1)) / ((x + 1) * (x + 1));
+
+        while (s21_fabs(y) > S21_EPS && !flag) {
+
+            z *= step;
+            y = (1 / powe)*z;
+
+            sum = sum + y;
+            powe = powe + 2;
+            count++;
+            if (2 * sum > DBL_MAX) {
                 flag = 1;
+                sum = S21_PLUS_INF;
             }
         }
+        sum *= 2;
     }
     return sum;
 }
@@ -114,6 +113,6 @@ long double s21_pow(double base, double exp){
 
 
 int main() {
-    printf("%Lf %f", s21_log(3), log(3));
+    printf("%Lf %f", s21_log(200), log(200));
     return 0;
 }
