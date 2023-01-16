@@ -1,11 +1,13 @@
 #include <stdlib.h>
 #include <check.h>
 #include <math.h>
+#include "s21_math.h"
+/*
 int s21_abs(int x) {
     if (x < 0)
         x = -x;
     return x;
-}
+}*/
 START_TEST(abs_of_positive_number)
 {
     int a = 1;
@@ -25,8 +27,10 @@ int main() {
     SRunner *sr = srunner_create(s1);
     
     suite_add_tcase(s1, tc_1);
+    
     tcase_add_test(tc_1, abs_of_positive_number);
     tcase_add_test(tc_1, abs_of_negative_number);
+    
     srunner_run_all(sr, CK_ENV);
     int a = srunner_ntests_failed(sr);
     srunner_free(sr);

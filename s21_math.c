@@ -26,6 +26,3 @@ long double s21_fmod(double x, double y) {
     return x;
 }
 
-int main() {
-    return 0;
-}
