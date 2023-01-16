@@ -2,6 +2,8 @@
 #include <math.h>
 #include <stdio.h>
 
+#define TEST 10, -1.5
+
 unsigned long long s21_fact(unsigned int x) {
     int y = 1;
     for (unsigned int i = 1; i <= x; i++, y *= i); 
@@ -21,20 +23,30 @@ long double s21_fabs(double x) {
 }
 
 long double s21_fmod(double x, double y) {
-    while (x >= y)
-        x -= y;
+    int sign = (x > 0) ? 1: -1;
+    x = s21_fabs(x);
+    y = s21_fabs(y);
+    if (y == 0)
+        x = S21_NAN;
+    else {
+        while (x >= y)
+            x -= y;
+        x *= sign;
+    }
     return x;
 }
 
 long double s21_exp(double x){
     long double sum = 1;
     long double add_value = 1;
-    for(int i = 1; add_value > S21_EPS; i++){
-        add_value *= x/i;
+    int flag = 0, i = 1;
+    while (s21_fabs(add_value) > S21_EPS && !flag) {
+        add_value *= (x / i);
+        i++;
         sum += add_value;
         if(sum > S21_MAX){
             sum = S21_PLUS_INF;
-            break;
+            flag = 1;
         }
     }
     return sum;
@@ -59,43 +71,51 @@ long double s21_floor(double x){
     return(res);
 }
 
-long double s21_log(double x){
-    long double sum = 0;
-    
-    if(x <= 0.){
-        if(x == 0.)
-            sum = S21_MINUS_INF;
-        else 
-            sum = S21_NAN;
-    }
-    else{
-        long double add_value = 0;
-        for(int i = 0; i < 100; i++){
-            add_value = 2*(x - s21_exp(sum))/(x + s21_exp(sum));
-            sum += add_value;
+long double s21_log(double x) {
+    double res = 0;
+    if (x == 0) {
+        res = S21_MINUS_INF;
+    } else if (x < 0) {
+        res = S21_NAN;
+    } else if (x < S21_PLUS_INF && x > S21_MINUS_INF) {
+        int ex_pow = 0;
+        long double result = 0;
+        long double compare = 0;
+
+        for (int i = 0; i < 100; i++) {
+            compare = result;
+            result = compare + 2 * (x - s21_exp(compare)) / (x + s21_exp(compare));
         }
-        
+        res = result + ex_pow;
+    } else if (x == S21_PLUS_INF || x == -S21_MINUS_INF) {
+        res = S21_PLUS_INF;
+    } else {
+        res = S21_NAN;
     }
-    return sum;
+    return res;
 }
 
 long double s21_pow(double base, double exp){
-    long double res = 0;
-    // if(exp < 0.){
-    //     base = 1/base;
-    //     exp = -exp;
-    //     printf("base: %f exp: %f\n", base, exp);
-    // }
+    long double res = 1;
+    
     if(base < 0.){
-        base = -base;
-        res = s21_exp(exp * s21_log(base));
-        if(s21_fmod(exp, 2) != 0)
-            res = -res;
+        if (exp == s21_floor(exp)) {
+            if (exp > 0)
+                for (long double i = 1; i <= exp; i++, res *= base);
+            else
+                for (long double i = -1; i >= exp; i--, res /= base);
+        }
+        else {
+            res = S21_NAN;
+        }
     }   
-    else{
+    else {
         res = s21_exp(exp * s21_log(base));
     }
-        
+    if (res < - S21_MAX + 1 && !(isnan(res)))
+        res = S21_MINUS_INF;
+    else if (res > S21_MAX && !(isnan(res)))
+        res = S21_MINUS_INF;
     return res;
 }
 
@@ -144,3 +164,7 @@ long double s21_atan(double x) {
     sum = s21_asin(x / sqrt(1 + x * x));
   return sum;
 }
+long double s21_sqrt(double x) {
+    return s21_pow(x, 0.5);
+}
+
