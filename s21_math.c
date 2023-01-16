@@ -38,6 +38,14 @@ long double s21_exp(double x){
     long double sum = 1;
     long double add_value = 1;
     int flag = 0, i = 1;
+    if (S21_isinf(x) && x < 0) {
+        sum = 0;
+        flag = 1;
+    }
+    if (S21_isnan(x)) {
+        sum = S21_NAN;
+        flag = 1;
+    }
     while (s21_fabs(add_value) > S21_EPS && !flag) {
         add_value *= (x / i);
         i++;
