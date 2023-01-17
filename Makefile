@@ -11,6 +11,13 @@ test: s21_test.c
 	./test
 	rm test
 
+gcov_report:
+	$(CC) $(CFLAGS) -fprofile-arcs -ftest-coverage s21_test.c s21_math.c -pthread -lcheck -pthread -lm -o test
+	./test
+	lcov -t "test_html" -o unit_test.info -c -d . --rc lcov_branch_coverage=1
+	genhtml -o test_html unit_test.info
+	open test_html/index.html
+
 clean:
 	rm s21_math.a
 
