@@ -1,12 +1,5 @@
 #include "s21_math.h"
 
-#define TEST 10, -1.5
-
-unsigned long long s21_fact(unsigned int x) {
-    int y = 1;
-    for (unsigned int i = 1; i <= x; i++, y *= i); 
-    return y;
-}
 
 int s21_abs(int x) {
     if (x < 0)

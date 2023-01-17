@@ -25,7 +25,6 @@
 #define S21_MAX 1.7976931348623158e+308
 #define S21_EPS 1e-16
 
-unsigned long long s21_fact(unsigned int x);
 int s21_abs(int x);
 long double s21_fabs(double x);
 long double s21_acos(double x);
