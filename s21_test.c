@@ -304,6 +304,138 @@ START_TEST(log_small) {
 }
 END_TEST
 
+START_TEST(pow_zero_in_inf)
+{
+    double a = 0.;
+    double b = S21_PLUS_INF;
+    ck_assert_ldouble_eq_tol(s21_pow(a,b),pow(a,b),1e-6);
+}
+END_TEST
+
+START_TEST(pow_zero_in_minus_inf)
+{
+    double a = 0.;
+    double b = S21_MINUS_INF;
+    ck_assert_ldouble_infinite(s21_pow(a,b));
+    ck_assert_ldouble_infinite(pow(a,b));
+}
+END_TEST
+
+START_TEST(pow_zero_in_nan)
+{
+    double a = 0.;
+    double b = S21_NAN;
+    ck_assert_ldouble_nan(s21_pow(a,b));
+    ck_assert_ldouble_nan(pow(a,b));
+}
+END_TEST
+
+START_TEST(pow_base_less_one_in_nan)
+{
+    double a = 0.12;
+    double b = S21_NAN;
+    ck_assert_ldouble_nan(s21_pow(a,b));
+    ck_assert_ldouble_nan(pow(a,b));
+}
+END_TEST
+
+START_TEST(pow_base_less_one_in_minus_inf)
+{
+    double a = 0.;
+    double b = S21_MINUS_INF;
+    ck_assert_ldouble_infinite(s21_pow(a,b));
+    ck_assert_ldouble_infinite(pow(a,b));
+}
+END_TEST
+
+START_TEST(pow_base_less_one_in_inf)
+{
+    double a = 0.;
+    double b = S21_PLUS_INF;
+    ck_assert_ldouble_eq_tol(s21_pow(a,b),pow(a,b),1e-6);
+}
+END_TEST
+
+START_TEST(pow_base_more_one_in_inf)
+{
+    double a = -1.2;
+    double b = S21_PLUS_INF;
+    ck_assert_ldouble_infinite(s21_pow(a,b));
+    ck_assert_ldouble_infinite(pow(a,b));
+}
+END_TEST
+
+START_TEST(pow_base_more_one_in_minus_inf)
+{
+    double a = 0.;
+    double b = S21_PLUS_INF;
+    ck_assert_ldouble_eq_tol(s21_pow(a,b),pow(a,b),1e-6);
+}
+END_TEST
+
+START_TEST(pow_base_more_one_in_nan)
+{
+    double a = 0.;
+    double b = S21_PLUS_INF;
+    ck_assert_ldouble_eq_tol(s21_pow(a,b),pow(a,b),1e-6);
+}
+END_TEST
+
+START_TEST(pow_nan_in_nan)
+{
+    double a = S21_NAN;
+    double b = S21_NAN;
+    ck_assert_ldouble_nan(s21_pow(a,b));
+    ck_assert_ldouble_nan(pow(a,b));
+}
+END_TEST
+
+START_TEST(sqrt_nan)
+{
+    double a = S21_NAN;
+    ck_assert_ldouble_nan(s21_sqrt(a));
+    ck_assert_ldouble_nan(sqrt(a));
+}
+END_TEST
+
+START_TEST(sqrt_inf)
+{
+    double a = S21_PLUS_INF;
+    ck_assert_ldouble_infinite(s21_sqrt(a));
+    ck_assert_ldouble_infinite(sqrt(a));
+}
+END_TEST
+
+START_TEST(sqrt_minus_inf)
+{
+    double a = S21_MINUS_INF;
+    ck_assert_ldouble_infinite(s21_sqrt(a));
+    ck_assert_ldouble_infinite(sqrt(a));
+}
+END_TEST
+
+START_TEST(sqrt_double)
+{
+    double a = 6.25;
+    ck_assert_ldouble_eq_tol(s21_sqrt(a),sqrt(a),1e-6);
+}
+END_TEST
+
+START_TEST(sqrt_minus_double)
+{
+    double a = -6.25;
+    ck_assert_ldouble_eq_tol(s21_sqrt(a),sqrt(a),1e-6);
+}
+END_TEST
+
+START_TEST(sqrt_zero)
+{
+    double a = 0.;
+    ck_assert_ldouble_eq_tol(s21_sqrt(a),sqrt(a),1e-6);
+}
+END_TEST
+
+
 int main() {
     Suite *s1 = suite_create("Tests_for_math");
     
@@ -312,6 +444,7 @@ int main() {
     TCase *tc_exp = tcase_create("Tests_for_exp");
     TCase *tc_pow = tcase_create("Tests_for_pow");
     TCase *tc_log = tcase_create("Tests_for_log");
+    TCase *tc_sqrt = tcase_create("Tests_for_sqrt");
     SRunner *sr = srunner_create(s1);
     
     suite_add_tcase(s1, tc_abs);
@@ -355,6 +488,16 @@ int main() {
     tcase_add_test(tc_pow, pow_one_in_NAN);
     tcase_add_test(tc_pow, pow_zero_in_double);
     tcase_add_test(tc_pow, pow_zero_in_zero);
+    tcase_add_test(tc_pow, pow_zero_in_inf);
+    tcase_add_test(tc_pow, pow_zero_in_minus_inf);
+    tcase_add_test(tc_pow, pow_zero_in_nan);
+    tcase_add_test(tc_pow, pow_base_less_one_in_nan);
+    tcase_add_test(tc_pow, pow_base_less_one_in_minus_inf);
+    tcase_add_test(tc_pow, pow_base_less_one_in_inf);
+    tcase_add_test(tc_pow, pow_base_more_one_in_inf);
+    tcase_add_test(tc_pow, pow_base_more_one_in_minus_inf);
+    tcase_add_test(tc_pow, pow_base_more_one_in_nan);
+    tcase_add_test(tc_pow, pow_nan_in_nan);
 
     tcase_add_test(tc_log, log_double_positive);
     tcase_add_test(tc_log, log_double_negative);
@@ -362,6 +505,13 @@ int main() {
     tcase_add_test(tc_log, log_plus_inf);
     tcase_add_test(tc_log, log_minus_inf);
     tcase_add_test(tc_log, log_small);
+    
+    tcase_add_test(tc_sqrt, sqrt_nan);
+    tcase_add_test(tc_sqrt, sqrt_inf);
+    tcase_add_test(tc_sqrt, sqrt_minus_inf);
+    tcase_add_test(tc_sqrt, sqrt_double);
+    tcase_add_test(tc_sqrt, sqrt_minus_double);
+    tcase_add_test(tc_sqrt, sqrt_zero);
 
     srunner_run_all(sr, CK_ENV);
     int a = srunner_ntests_failed(sr);
