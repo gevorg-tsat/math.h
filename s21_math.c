@@ -108,7 +108,9 @@ long double s21_pow(double base, double exp){
     else if (base == 0) {
         if(S21_isnan(exp))
             res = S21_NAN;
-        else
+        else if(exp < 0)
+            res = S21_PLUS_INF;
+        else 
             res = 0;
     }
     else if (base == 1) {

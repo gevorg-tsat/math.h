@@ -2,6 +2,6 @@
 #include <math.h>
 
 int main() {
-    printf("%f", pow(S21_PLUS_INF, 0));
+    printf("%Lf", s21_sqrt(-6.25));
     return 0;
 }
