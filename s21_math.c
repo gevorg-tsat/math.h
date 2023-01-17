@@ -1,4 +1,5 @@
 #include "s21_math.h"
+#include <math.h>
 
 
 int s21_abs(int x) {
@@ -146,10 +147,14 @@ long double s21_pow(double base, double exp){
 long double s21_sin(double x) {
   long double q = x, sum = 0;
   int i = 1;
-  while (s21_fabs(q) > S21_EPS) {
-    sum += q;
-    q = q * (-1) * (x * x) / ((2 * i + 1) * (2 * i));
-    i++;
+  if (S21_isinf(x) || S21_isnan(x)) {
+    sum = S21_NAN;
+  } else {
+    while (s21_fabs(q) > S21_EPS) {
+      sum += q;
+      q = q * (-1) * (x * x) / ((2 * i + 1) * (2 * i));
+      i++;
+    }
   }
   return sum;
 }
@@ -159,21 +164,32 @@ long double s21_cos(double x) {
 }
 
 long double s21_tan(double x) {
-  return s21_sin(x) / s21_cos(x);
+  x = fmod(x, S21_PI);
+  long double result = 0;
+  if (((s21_fabs(s21_fabs(x) - S21_PI_2) < 1e-6) || S21_isinf(x) || S21_isnan(x)) && (x != 0))
+    result = S21_NAN;
+  else
+    result = s21_sin(x) / s21_cos(x);
+  return result;
 }
 
 long double s21_asin(double x) {
   long double q = x, sum = 0;
   int i = 0;
-  if (s21_fabs(x) < 0.5) {
+  if (s21_fabs(x) <= 0.5) {
     while (s21_fabs(q) > S21_EPS) {
       sum += q;
       q = q * (x * x * (2 * i + 1) * (2 * i + 1)) / (2 * (2 * i + 3) * (i + 1));
       i++;
     }
-  } else if (s21_fabs(x) <= 1) {
-    sum = S21_PI_2 - 2 * s21_asin(s21_sqrt((1 - x) / 2));
-  } else 
+  } else if (s21_fabs(x) < 1) {
+    sum = S21_PI_2 - 2 * s21_asin(s21_sqrt((1. - x) / 2.));
+  } else if (s21_abs(x) == 1) {
+    if (x == 1)
+      sum = S21_PI_2;
+    else 
+      sum = -S21_PI_2;
+  } else
     sum = S21_NAN;
   return sum;
 }
@@ -183,11 +199,16 @@ long double s21_acos(double x) {
 }
 
 long double s21_atan(double x) {
-  long double sum = S21_PI_2;
-  if (!S21_isinf(x)) 
+  long double sum = S21_NAN;
+  if (!S21_isinf(x))
     sum = s21_asin(x / s21_sqrt(1 + x * x));
+  else if (x == S21_MINUS_INF)
+    sum = -S21_PI_2;
+  else if (x == S21_PLUS_INF)
+    sum = S21_PI_2;
   return sum;
 }
+
 long double s21_sqrt(double x) {
     return s21_pow(x, 0.5);
 }
