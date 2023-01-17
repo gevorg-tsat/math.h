@@ -27,6 +27,7 @@ START_TEST(fabs_of_positive_double)
     ck_assert_double_eq_tol(s21_fabs(a),fabs(a),1e-6);
 }
 END_TEST
+
 START_TEST(fabs_of_negative_double)
 {
     int min = -10000;
@@ -35,6 +36,28 @@ START_TEST(fabs_of_negative_double)
     ck_assert_double_eq_tol(s21_fabs(a),fabs(a),1e-6);
 }
 END_TEST
+
+START_TEST(fabs_of_inf)
+{
+    double arg = S21_PLUS_INF;
+    ck_assert_ldouble_infinite(s21_fabs(arg));
+    ck_assert_double_infinite(fabs(arg));
+    arg = S21_MINUS_INF;
+    ck_assert_ldouble_infinite(s21_fabs(arg));
+    ck_assert_double_infinite(fabs(arg));
+
+}
+END_TEST
+
+START_TEST(fabs_of_nan)
+{
+    double arg = S21_NAN;
+    ck_assert_ldouble_nan(s21_fabs(arg));
+    ck_assert_double_nan(fabs(arg));
+
+}
+END_TEST
+
 START_TEST(fmod_with_numbers_more_then_zero)
 {
     int min = 1;
@@ -54,6 +77,7 @@ START_TEST(fmod_with_numbers_less_then_zero)
     ck_assert_double_eq_tol(s21_fmod(a,b),fmod(a,b),1e-6);
 }
 END_TEST
+
 START_TEST(fmod_with_one_numbers_less_and_one_more_then_zero)
 {
     double a = 9.;
@@ -61,6 +85,31 @@ START_TEST(fmod_with_one_numbers_less_and_one_more_then_zero)
     ck_assert_double_eq_tol(s21_fmod(a,b),fmod(a,b),1e-6);
 }
 END_TEST
+
+START_TEST(fmod_inf)
+{
+    double arg1 = S21_PLUS_INF, arg2 = 4;
+    ck_assert_ldouble_nan(s21_fmod(arg1, arg2));
+    ck_assert_double_nan(fmod(arg1, arg2));
+    arg1 = 4;
+    arg2 = S21_PLUS_INF;
+    ck_assert_ldouble_eq_tol(s21_fmod(arg1, arg2), fmod(arg1, arg2), 1e-6);
+    arg1 = S21_PLUS_INF, arg2 = S21_PLUS_INF;
+    ck_assert_ldouble_nan(s21_fmod(arg1, arg2));
+    ck_assert_double_nan(fmod(arg1, arg2));
+}
+END_TEST
+
+START_TEST(fmod_nan)
+{
+    double arg1 = S21_NAN, arg2 = 4;
+    ck_assert_ldouble_nan(s21_fmod(arg1, arg2));
+    ck_assert_double_nan(fmod(arg1, arg2));
+    arg1 = S21_NAN;
+    arg2 = S21_PLUS_INF;
+    ck_assert_ldouble_nan(s21_fmod(arg1, arg2));
+    ck_assert_double_nan(fmod(arg1, arg2));
+}
 
 START_TEST(exp_zero)
 {
@@ -176,6 +225,7 @@ START_TEST(pow_NAN_in_litte_negative_exp)
     ck_assert_ldouble_nan(pow(a,b));
 }
 END_TEST
+
 START_TEST(pow_int_in_NAN)
 {
     double a = 2;
@@ -184,6 +234,7 @@ START_TEST(pow_int_in_NAN)
     ck_assert_ldouble_nan(pow(a,b));
 }
 END_TEST
+
 START_TEST(pow_one_in_NAN)
 {
     double a = 1;
@@ -191,6 +242,7 @@ START_TEST(pow_one_in_NAN)
     ck_assert_ldouble_eq_tol(s21_pow(a,b),pow(a,b),1e-6);
 }
 END_TEST
+
 START_TEST(pow_zero_in_double)
 {
     double a = 0.;
@@ -206,6 +258,52 @@ START_TEST(pow_zero_in_zero)
     ck_assert_ldouble_eq_tol(s21_pow(a,b),pow(a,b),1e-6);
 }
 END_TEST
+
+START_TEST(log_double_positive)
+{
+    long double arg = 100;
+    ck_assert_ldouble_eq_tol(s21_log(arg), log(arg), 1e-6);
+}
+END_TEST
+
+START_TEST(log_double_negative)
+{
+    long double arg = -0.1;
+    ck_assert_ldouble_nan(s21_log(arg));
+    ck_assert_double_nan(log(arg));
+}
+END_TEST
+
+START_TEST(log_zero)
+{
+    long double arg = 0;
+    ck_assert_ldouble_infinite(s21_log(arg));
+    ck_assert_double_infinite(log(arg));
+}
+END_TEST
+
+START_TEST(log_plus_inf)
+{
+    long double arg = S21_PLUS_INF;
+    ck_assert_ldouble_infinite(s21_log(arg));
+    ck_assert_double_infinite(log(arg));
+}
+END_TEST
+
+START_TEST(log_minus_inf)
+{
+    long double arg = S21_MINUS_INF;
+    ck_assert_ldouble_nan(s21_log(arg));
+    ck_assert_double_nan(log(arg));
+}
+END_TEST
+
+START_TEST(log_small) {
+    long double arg = 0.1;
+    ck_assert_ldouble_eq_tol(s21_log(arg), log(arg), 1e-6);
+}
+END_TEST
+
 int main() {
     Suite *s1 = suite_create("Tests_for_math");
     
@@ -213,22 +311,29 @@ int main() {
     TCase *tc_fmod = tcase_create("Tests_for_fmod");
     TCase *tc_exp = tcase_create("Tests_for_exp");
     TCase *tc_pow = tcase_create("Tests_for_pow");
+    TCase *tc_log = tcase_create("Tests_for_log");
     SRunner *sr = srunner_create(s1);
     
     suite_add_tcase(s1, tc_abs);
     suite_add_tcase(s1, tc_fmod);
     suite_add_tcase(s1, tc_exp);
     suite_add_tcase(s1, tc_pow);
-    
+    suite_add_tcase(s1, tc_log);
+
     tcase_add_test(tc_abs, abs_of_positive_int);
     tcase_add_test(tc_abs, abs_of_negative_int);
     tcase_add_test(tc_abs, fabs_of_positive_double);
     tcase_add_test(tc_abs, fabs_of_negative_double);
     tcase_add_test(tc_abs, abs_of_zero);
+    tcase_add_test(tc_abs, fabs_of_inf);
+    tcase_add_test(tc_abs, fabs_of_nan);
+    
     
     tcase_add_test(tc_fmod, fmod_with_numbers_more_then_zero);
     tcase_add_test(tc_fmod, fmod_with_numbers_less_then_zero);
     tcase_add_test(tc_fmod, fmod_with_one_numbers_less_and_one_more_then_zero);
+    tcase_add_test(tc_fmod, fmod_inf);
+    tcase_add_test(tc_fmod, fmod_nan);
 
     tcase_add_test(tc_exp, exp_zero);
     tcase_add_test(tc_exp, exp_double_positive);
@@ -251,6 +356,12 @@ int main() {
     tcase_add_test(tc_pow, pow_zero_in_double);
     tcase_add_test(tc_pow, pow_zero_in_zero);
 
+    tcase_add_test(tc_log, log_double_positive);
+    tcase_add_test(tc_log, log_double_negative);
+    tcase_add_test(tc_log, log_zero);
+    tcase_add_test(tc_log, log_plus_inf);
+    tcase_add_test(tc_log, log_minus_inf);
+    tcase_add_test(tc_log, log_small);
 
     srunner_run_all(sr, CK_ENV);
     int a = srunner_ntests_failed(sr);

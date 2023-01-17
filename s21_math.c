@@ -15,7 +15,9 @@ int s21_abs(int x) {
 }
 
 long double s21_fabs(double x) {
-    if (x < 0)
+    if (S21_isnan(x))
+        x = S21_NAN;
+    else if (x < 0)
         x = - 1L * x;
     return x;
 }
@@ -24,13 +26,13 @@ long double s21_fmod(double x, double y) {
     int sign = (x > 0) ? 1: -1;
     x = s21_fabs(x);
     y = s21_fabs(y);
-    if (y == 0)
+    if (S21_isinf(x) || S21_isnan(x) || S21_isnan(y) || y == 0)
         x = S21_NAN;
-    else {
+    else if (!S21_isinf(y)) {
         while (x >= y)
             x -= y;
-        x *= sign;
     }
+    x *= sign;
     return x;
 }
 
@@ -93,8 +95,13 @@ long double s21_log(double x) {
             result = compare + 2 * (x - s21_exp(compare)) / (x + s21_exp(compare));
         }
         res = result + ex_pow;
-    } else if (x == S21_PLUS_INF || x == -S21_MINUS_INF) {
-        res = S21_PLUS_INF;
+        if (res > S21_MAX)
+            res = S21_PLUS_INF;
+    } else if (S21_isinf(x)) {
+        if (x > 0)
+            res = S21_PLUS_INF;
+        else
+            res = S21_NAN;
     } else {
         res = S21_NAN;
     }
