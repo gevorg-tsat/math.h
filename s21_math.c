@@ -92,10 +92,7 @@ long double s21_log(double x) {
         if (res > S21_MAX)
             res = S21_PLUS_INF;
     } else if (S21_isinf(x)) {
-        if (x > 0)
-            res = S21_PLUS_INF;
-        else
-            res = S21_NAN;
+        res = S21_PLUS_INF;
     } else {
         res = S21_NAN;
     }
@@ -137,9 +134,9 @@ long double s21_pow(double base, double exp){
     else {
         res = s21_exp(exp * s21_log(base));
     }
-    if (S21_isinf(res) && res < 0)
+    if (res < -S21_MAX)
         res = S21_MINUS_INF;
-    else if (S21_isinf(res) && res > 0)
+    else if (res > S21_MAX)
         res = S21_PLUS_INF;
     return res;
 }
