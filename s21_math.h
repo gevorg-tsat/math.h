@@ -1,6 +1,6 @@
 #ifndef SRC_MATH_S21_MATH_H_
 #define SRC_MATH_S21_MATH_H_
- 
+
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -30,12 +30,15 @@ long double s21_fabs(double x);
 long double s21_acos(double x);
 long double s21_asin(double x);
 long double s21_atan(double x);
-long double s21_ceil(double x); //возвращает ближайшее целое число, не меньшее заданного значения
+long double s21_ceil(double x);  // возвращает ближайшее целое число, не меньшее
+                                 // заданного значения
 long double s21_cos(double x);
 long double s21_exp(double x);
 long double s21_fabs(double x);
-long double s21_floor(double x); //  возвращает ближайшее целое число, не превышающее заданное значение
-long double s21_fmod(double x, double y); // остаток операции деления с плавающей точкой
+long double s21_floor(double x);  //  возвращает ближайшее целое число, не
+                                  //  превышающее заданное значение
+long double s21_fmod(double x,
+                     double y);  // остаток операции деления с плавающей точкой
 long double s21_log(double x);
 long double s21_pow(double base, double exp);
 long double s21_sin(double x);
