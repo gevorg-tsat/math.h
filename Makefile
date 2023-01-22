@@ -22,7 +22,7 @@ gcov_report:
 	open test_html/index.html
 
 clean:
-	rm -f s21_math.a *.gc* test unit_test.info
+	rm -rf s21_math.a *.gc* test unit_test.info test_html/
 
 rebuild: 
 	clean all
