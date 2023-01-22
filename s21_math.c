@@ -30,7 +30,7 @@ long double s21_exp(double x) {
   long double sum = 1;
   long double add_value = 1;
   int flag = 0, i = 1;
-  if ((S21_isinf(x) && x < 0) || x < 709) {
+  if ((S21_isinf(x) && x < 0) || x < -709.782712893) {
     sum = 0;
     flag = 1;
   }
